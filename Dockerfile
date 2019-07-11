@@ -49,4 +49,4 @@ COPY --from=test-and-build /app/jobs ./jobs
 
 # Expose port and define CMD
 EXPOSE 3000
-CMD ["node", "dist/handler.js"]
+CMD ["node", "dist/app.js"]

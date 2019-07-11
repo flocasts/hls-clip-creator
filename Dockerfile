@@ -1,4 +1,5 @@
-### ---- Base Node ----
+## ---- Base Node ----
+
 FROM alpine:3.9 AS base
 # Install node & tini process runner
 RUN apk add --no-cache nodejs tini

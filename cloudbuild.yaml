@@ -44,7 +44,7 @@ steps:
     args:
       - apply
       - -f
-      - ./devops/k8s
+      - ./k8s
     env:
       - 'CLOUDSDK_COMPUTE_REGION=$_REGION'
       - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLUSTER'

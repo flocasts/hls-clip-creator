@@ -1,14 +1,18 @@
 {
   "name": "hls-clip-creator",
   "version": "1.0.0",
+  "repository": "https://github.com/flocasts/hls-clip-creator",
   "description": "",
-  "main": "handler.js",
+  "main": "app.js",
   "scripts": {
-    "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:prod": "node dist/app.js",
+    "start:dev": "ts-node-dev --respawn --no-notify --transpileOnly src/app.ts | pino-pretty",
+    "build": "tsc -p .",
+    "test": "jest",
+    "test:watch": "jest --watchAll"
   },
   "keywords": [],
-  "author": "Nicholas Schirmer <nicholas.schirmer@flosports.tv>",
+  "author": "",
   "contributors": [
     "Nicholas Schirmer <nicholas.schirmer@flosports.tv>",
     "Samir Patel <samir.patel@flosports.tv>"

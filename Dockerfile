@@ -35,7 +35,6 @@ COPY . .
 # Install ALL node_modules, including 'devDependencies'
 RUN npm install
 # RUN npm run lint && npm run test
-RUN npm run test
 RUN npm run build
 
 #

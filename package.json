@@ -7,9 +7,7 @@
   "scripts": {
     "start:prod": "node dist/app.js",
     "start:dev": "ts-node-dev --respawn --no-notify --transpileOnly src/app.ts | pino-pretty",
-    "build": "tsc -p .",
-    "test": "jest",
-    "test:watch": "jest --watchAll"
+    "build": "tsc -p ."
   },
   "keywords": [],
   "author": "",

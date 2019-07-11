@@ -46,25 +46,6 @@ spec:
               value: _APP_NAME-jobs-service-account
           ports:
             - containerPort: 3000
-          livenessProbe:
-            initialDelaySeconds: 2
-            periodSeconds: 5
-            httpGet:
-              path: /livez
-              port: 3000
-          readinessProbe:
-            initialDelaySeconds: 2
-            periodSeconds: 5
-            httpGet:
-              path: /healthz
-              port: 3000
-          resources:
-            requests:
-              cpu: 100m
-              memory: 64M
-            limits:
-              cpu: 1000m
-              memory: 256M
 ---
 kind: Service
 apiVersion: v1

@@ -45,7 +45,6 @@ WORKDIR /app
 COPY --from=app-dependencies /app/prod_node_modules ./node_modules
 # Copy built app
 COPY --from=test-and-build /app/dist ./dist
-COPY --from=test-and-build /app/jobs ./jobs
 
 # Expose port and define CMD
 EXPOSE 3000

@@ -8,9 +8,14 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Nicholas Schirmer <nicholas.schirmer@flosports.tv>",
+  "contributors": [
+    "Nicholas Schirmer <nicholas.schirmer@flosports.tv>",
+    "Samir Patel <samir.patel@flosports.tv>"
+  ],
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.492.0",
     "hls-parser": "^0.4.1"
   },
   "devDependencies": {

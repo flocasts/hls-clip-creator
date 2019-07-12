@@ -1,15 +1,12 @@
-import logger from './logger';
-// import { Chunklist } from './service/chunklist.class';
-import s3service from './service/s3.service.class';
+// import logger from './logger';
+import { HlsClipCreator, ClipBody } from './service/hls.clip.creator.class';
 
-// Chunklist.loadFromUrl('https://staging-cdn-florigin.flofc.com/streams/9588/a/3000/258828854_chunklist_vo.m3u8')
-// .then((chunklist: Chunklist) => {
-//     logger.debug(chunklist.getSegments());
-// });
+const clip: ClipBody = {
+    streamId: 9588,
+    in: 1553002898000,
+    out: 1553002948169,
+    meta: {}
+}
 
-s3service.queryObjects('flosports-video-stag', 'streams/5486/a/1000/',
-"Contents[?LastModifiedString>=`2018-10-28T00:06:15.000Z`] | [?contains(Key, 'm3u8')][].Key"
-)
-.then((results) => {
-    logger.debug(results);
-});
+const clipCreator = new HlsClipCreator(clip);
+clipCreator.copyStreamToLocal();

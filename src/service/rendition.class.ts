@@ -57,6 +57,10 @@ export class Rendition {
         return this.variant.uri;
     }
 
+    public getUriPath(): string {
+        return this.getUri().split('/').slice(0, -1).join('/');
+    }
+
     public toString(): string {
         let out: string = '';
         out += this.streamInfo.toString();
@@ -67,6 +71,4 @@ export class Rendition {
 
         return out;
     }
-
-
 }

@@ -18,8 +18,10 @@
   "license": "ISC",
   "dependencies": {
     "@kubernetes/client-node": "^0.10.0",
+    "@types/bluebird": "^3.5.27",
     "@types/jmespath": "^0.15.0",
     "aws-sdk": "^2.492.0",
+    "bluebird": "^3.5.5",
     "body-parser": "^1.19.0",
     "dotenv": "^8.0.0",
     "hls-parser": "^0.4.1",

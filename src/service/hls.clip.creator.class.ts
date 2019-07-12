@@ -1,5 +1,5 @@
 import Bluebird from 'bluebird';
-import fs from 'fs';
+import fs, { mkdirSync } from 'fs';
 import s3service from './s3.service.class';
 import { Playlist } from './playlist.class'
 import logger from '../logger';
@@ -30,31 +30,12 @@ export class HlsClipCreator {
     }
 
     protected async downloadChunklistsFromPlaylist(playlist: Playlist) {
-        const startDate = new Date(this.clipBody.in);
-        const endDate = new Date(this.clipBody.out);
         const playlistUriPath = playlist.getUriPath();
         const paths = [];
-
-        startDate.setHours(startDate.getHours() - 1);
-        endDate.setHours(endDate.getHours() + 1);
-
-        const queryParts = [
-            `Contents[?LastModifiedString>=\`${startDate.toISOString()}\`]`,
-            `[?LastModifiedString>=\`${endDate.toISOString()}\`]`,
-            `[?contains(Key, '_chunklist_')][].Key`
-        ];
-        const query = queryParts.join('|');
+        const query = this.getFilterQuery();
 
         for (const rendition of playlist.getRenditions()) {
             paths.push([playlistUriPath, rendition.getUriPath()].join('/'));
-        }
-
-        try {
-            fs.mkdirSync('streams');
-            fs.mkdirSync(playlistUriPath.split('/').slice(0,-1).join('/'));
-            fs.mkdirSync(playlistUriPath);
-        } catch(err) {
-
         }
 
         await Bluebird.map(paths, async (path: string, idx) => {
@@ -62,11 +43,7 @@ export class HlsClipCreator {
 
             await s3service.queryObjects('flosports-video-stag', path, query)
                 .then(async (chunklists: string[]) => {
-                    try {
-                        fs.mkdirSync(path);
-                    } catch(err) {
-
-                    }
+                    this.createDirectoryStructure(path);
 
                     await this.downloadChunklists(chunklists);
                 });
@@ -93,5 +70,46 @@ export class HlsClipCreator {
         }, {
             concurrency: 10
         });
+    }
+    
+    protected getFilterQuery(): string {
+        const startDate = new Date(this.clipBody.in);
+        const endDate = new Date(this.clipBody.out);
+
+        startDate.setHours(startDate.getHours() - 1);
+        endDate.setHours(endDate.getHours() + 1);
+
+        const queryParts = [
+            `Contents[?LastModifiedString>=\`${startDate.toISOString()}\`]`,
+            `[?LastModifiedString>=\`${endDate.toISOString()}\`]`,
+            `[?contains(Key, '_chunklist_')][].Key`
+        ];
+
+        return queryParts.join('|');
+    }
+
+    protected createDirectoryStructure(path: string) {
+        if (path.length === 0) {
+            return;
+        }
+
+        const pathParts: string[] = path.split('/');
+        let createPath: string = <string> pathParts.shift();
+
+        this.createDirectory(createPath);
+
+        for (const pathPart of pathParts) {
+            createPath += '/' + pathPart;
+
+            this.createDirectory(createPath);
+        }
+    }
+
+    protected createDirectory(path: string) {
+        try {
+            mkdirSync(path);
+        } catch(err) {
+            //
+        }
     }
 }

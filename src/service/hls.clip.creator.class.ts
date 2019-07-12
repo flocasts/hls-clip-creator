@@ -18,10 +18,11 @@ export interface ClipBody {
 
 export class HlsClipCreator {
     private clipBody: ClipBody;
-    private bucket = 'flosports-video-stag';
+    private bucket: string;
 
     constructor(clipBody: ClipBody) {
         this.clipBody = clipBody;
+        this.bucket = <string> process.env.BUCKET;
     }
 
     public copyStreamToLocal() {
@@ -41,7 +42,7 @@ export class HlsClipCreator {
         await Bluebird.map(paths, async (path: string, idx) => {
             logger.debug(`Running ${idx}: ${path}`);
 
-            await s3service.queryObjects('flosports-video-stag', path, query)
+            await s3service.queryObjects(this.bucket, path, query)
                 .then(async (chunklists: string[]) => {
                     this.createDirectoryStructure(path);
 
@@ -76,8 +77,8 @@ export class HlsClipCreator {
         const startDate = new Date(this.clipBody.in);
         const endDate = new Date(this.clipBody.out);
 
-        startDate.setHours(startDate.getHours() - 1);
-        endDate.setHours(endDate.getHours() + 1);
+        startDate.setMinutes(startDate.getMinutes() - 10);
+        endDate.setMinutes(endDate.getMinutes() + 10);
 
         const queryParts = [
             `Contents[?LastModifiedString>=\`${startDate.toISOString()}\`]`,

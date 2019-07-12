@@ -6,7 +6,7 @@
   "main": "app.js",
   "scripts": {
     "start:prod": "node dist/app.js",
-    "start:dev": "APP_ID=123123 ts-node-dev --respawn --no-notify --transpileOnly src/app.ts | pino-pretty",
+    "start:dev": "BUCKET=flosports-video-stag ts-node-dev --respawn --no-notify --transpileOnly src/app.ts | pino-pretty",
     "build": "tsc -p ."
   },
   "keywords": [],
